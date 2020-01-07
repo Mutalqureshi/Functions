@@ -21,7 +21,6 @@ add_theme_support('post_thumbnails');
         wp_enqueue_style( 'arboursdentistry-responsive', get_template_directory_uri() . '/css/rwd.css' ,false, time() , 'all');
         wp_enqueue_style( 'arboursdentistry-custom', get_template_directory_uri() . '/css/theme-style.css', false, time() , 'all' );
     // style end script start
-        wp_enqueue_script( 'arboursdentistry-print-js', get_template_directory_uri() . '/js/print_this.js' );
         wp_enqueue_script( 'arboursdentistry-bootstrap-js', get_template_directory_uri() . '/js/bootstrap.min.js' );
         wp_enqueue_script( 'arboursdentistry-slick-js', get_template_directory_uri() . '/js/slick.js' );
         wp_enqueue_script( 'arboursdentistry-custom-js', get_template_directory_uri() . '/js/custom.js', array(), time(), true );
@@ -65,13 +64,6 @@ function my_custom_css() {
 ######################################################################################
 //ADD custom logo on wordpress login page
 ######################################################################################
-
-function favicon4admin() {
-echo '<link rel="Shortcut Icon" type="image/x-icon" href="http://www.cratos.com/wp-content/uploads/2019/10/cratos-fav-1.png" />';
-}
-add_action( 'admin_head', 'favicon4admin' );// Now, just make sure that function runs when you're on the login page and admin pages  
-
-
 add_action( 'login_enqueue_scripts', 'my_login_logo' );
 function my_login_logo() {
     global $fdata;
@@ -395,7 +387,6 @@ add_filter('wpcf7_form_action_url', 'change_wpcf7_url'); */
 
     
 global $fdata;
-    $html ="";
     $html .='<div id="logo-slider" class="logo_slider logo-container">';
             $logo = $fdata['logo-gallery'] ;
             $etc = explode(",", $logo) ;
@@ -624,7 +615,6 @@ add_shortcode("subscribe","subscribe_sec");
 function subscribe_sec() 
 {
     global $fdata; 
-    $html ="";
     if($fdata['subs-switch']==1){
                 $html .='<div class="Subscribe-section">';      
                     if($fdata['subs_head']){
@@ -689,7 +679,6 @@ function footer_contact_from(){
 /* contact page social */
 add_shortcode("contact-details","social_icons_sec");
 function social_icons_sec(){
-     $html ='';
     $html .='<div class="footer-contacts">';
     global $fdata;
     if($fdata['st-contact-details']['phone']){
@@ -697,7 +686,7 @@ function social_icons_sec(){
     }
     $html .='<br>';
     if($fdata['st-contact-details']['faxnumber']){
-        $html .='<a class="with-icon faxnumber" href="tel:'.$fdata['st-contact-details']['faxnumber'].'"><i class="fas fa-fax"></i>'.$fdata['st-contact-details']['faxnumber'].'</a>';
+        $html .='<a class="with-icon faxnumber" href="mailto:'.$fdata['st-contact-details']['faxnumber'].'"><i class="fas fa-fax"></i>'.$fdata['st-contact-details']['faxnumber'].'</a>';
     }
     $html .='<br>';
     if($fdata['st-contact-details']['email']){
@@ -719,7 +708,6 @@ function social_icons_sec(){
 add_shortcode("footerbottomsocial","footer_bottom_social");
 function footer_bottom_social(){
     global $fdata;
-    $html ="";
             $html .='<ul class="social-icons">';
             $html .='<li class="text">Follow us</li>';
             if($fdata['st-social']['instagram']){
@@ -745,6 +733,11 @@ function footer_bottom_social(){
         if($fdata['st-social']['youtube']){
             $html .='<li><a href="'.$fdata['st-social']['youtube'].'" class="fab fa-youtube" target="_blank"></a></li>';
             } 
+        if($fdata['st-social-header']['vimeo']){
+            $html .='<li><a href="'.$fdata['st-social']['vimeo'].'" class="fa fa-vimeo" target="_blank"></a></li>';
+            }
+        
+        
         if($fdata['st-social']['yelp']){
             $html .='<li><a href="'.$fdata['st-social']['yelp'].'" class="fab fa-yelp" target="_blank"></a></li>';
             }
@@ -874,7 +867,15 @@ function footer_bottom_social(){
         }
     add_shortcode('my-google-map', 'my_google_map');
 /*----------------*/
-
+/*----short-code-with-parameters--------*/
+/*  function maparea( $atts ) {
+    $a = shortcode_atts( array(
+        'height' => '100px',
+        'width' => '100%',
+    ), $atts );
+    return "height = {$a['height']}"." width = {$a['width']}";
+}
+add_shortcode( 'maparea-to-add', 'maparea');  */
 /*----short-code-with-parameters-Ended-------*/
 /*----current-year--------*/
 function year_shortcode() {
@@ -903,11 +904,10 @@ function jobs(){
       $args = array(
                     'post_type' => array( 'jobs' ),
                     'post_status' => array( 'publish' ),
-                    // 'paged' => $paged,
+                    'paged' => $paged,
                );
 
    $query = new WP_Query( $args );
-         $html="";
             $html .='<section class="good-company-section-2">';   
                                 $html .='<ul class="jobs-links">';
         if ($query->have_posts()){
@@ -926,6 +926,14 @@ add_shortcode("jobs-sec","jobs");
 /* home-gallery Shortcode */
 /* show-gallery*/
 
+
+    
+	
+	
+	
+	
+	
+	
 	
 // Add scripts to wp_footer()
 function child_theme_footer_script() {
